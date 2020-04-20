@@ -1,0 +1,26 @@
+	
+BoardMapper.xml 의 검색 및 페이지 처리 (335page)
+
+<select id="getListWithPaging" resultType="kr.yonsai.domain.BoardVO">
+		SELECT *
+		FROM tbl_board
+		<trim prefix="where (" suffix=")" prefixOverrides="or">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="or">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title like concat('%',#{keyword},'%')
+						</when>
+						<when test="type == 'C'.toString()">
+							content like concat('%',#{keyword},'%')
+						</when>
+						<when test="type == 'W'.toString()">
+							writer like concat('%',#{keyword},'%')
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+		ORDER BY bno DESC
+		LIMIT #{offsetNum}, #{amount}
+</select>

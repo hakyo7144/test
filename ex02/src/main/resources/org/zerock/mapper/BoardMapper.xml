@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.BoardMapper">
+
+
+	<select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
+		SELECT * FROM tbl_board ORDER BY bno DESC
+		LIMIT #{offsetNum}, #{amount}	
+	</select>
+	
+	
+	<insert id="insert">
+		INSERT INTO sample_db.tbl_board
+		(title, content, writer)
+		VALUES(#{title}, #{content}, #{writer})
+	</insert>
+	
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="bno" order="BEFORE" resultType="int">
+			SELECT auto_increment
+			FROM information_schema.TABLES
+			WHERE TABLE_SCHEMA = "sample_db"
+			AND TABLE_NAME = "tbl_board"
+		</selectKey>
+	
+		INSERT INTO sample_db.tbl_board
+		(bno, title, content, writer)
+		VALUES(#{bno}, #{title}, #{content}, #{writer})
+	
+	</insert>
+	
+	<select id="read" resultType="org.zerock.domain.BoardVO">
+		select * from tbl_board where bno=#{bno}
+	</select>
+	
+	<delete id="delete">
+		delete from tbl_board where bno = #{bno }
+	</delete>
+	
+	<update id="update">
+		UPDATE sample_db.tbl_board
+		SET title=#{title}, content=#{content}, writer=#{writer}
+		WHERE bno=#{bno}
+	</update>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from tbl_board where bno>0
+	</select>
+	
+</mapper>
