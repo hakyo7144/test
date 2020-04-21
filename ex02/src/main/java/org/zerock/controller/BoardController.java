@@ -35,7 +35,7 @@ public class BoardController {
 		cri.updateOffsetNum();
 		log.info("list: " + cri);
 		int total =service.getTotal(cri);
-		
+		log.info("total : **"+total);
 		model.addAttribute("list", service.getList(cri));
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 
